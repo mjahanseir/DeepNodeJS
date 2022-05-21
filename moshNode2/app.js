@@ -43,11 +43,14 @@
 // });
 // console.log(fss);
 
-const EventEmitter = require("events");
+const http = require("http");
 
-const Logger = require("./logger");
-const logger = new Logger();
+const server = http.createServer((req, res) => {
+  if (req.url === "/") {
+    res.write("Hello world");
+    res.end();
+  }
+});
+server.listen(3000);
 
-logger.on("messageLogged", (arg) => console.log("Listener called", arg));
-
-logger.log("message");
+console.log("Listen on port 30000");
