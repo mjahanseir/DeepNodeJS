@@ -3,17 +3,25 @@
 // Promise.all([p1, p2]);
 // Promise.race([p1, p2]);
 
-const p1 = new Promise((resolve) => {
-  setTimeout(() => {
-    console.log("Async operation 1...");
-    resolve(1);
-  }, 2000);
-});
+// const p1 = new Promise((resolve) => {
+//   setTimeout(() => {
+//     console.log("Async operation 1...");
+//     resolve(1);
+//   }, 2000);
+// });
 
-const user = await getUser(1);
-const repos = await getRepo(user.getHubusername);
-const commits = await getCommit(repos[0]);
-console.log(commits);
+async function displayCommits() {
+  try {
+    const user = await getUser(1);
+    const repos = await getRepo(user.getHubusername);
+    const commits = await getCommit(repos[0]);
+    console.log(commits);
+  } catch (err) {
+    console.log("Error", err.message);
+  }
+}
+
+displayCommits();
 
 const p2 = new Promise((resolve) => {
   setTimeout(() => {
@@ -22,6 +30,30 @@ const p2 = new Promise((resolve) => {
   }, 2000);
 });
 
-Promise.racce([p1, p2])
-  .then((result) => console.log(result))
-  .catch((err) => console.log("Error", err.message));
+function getUser(id) {
+  return new Promise((resolve, reject) => {
+    // Kick off some async work
+    setTimeout(() => {
+      console.log("Reading a user from a database...");
+      resolve({ id: id, gitHubUsername: "mosh" });
+    }, 2000);
+  });
+}
+
+function getRepositories(username) {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      console.log("Calling GitHub API...");
+      resolve(["repo1", "repo2", "repo3"]);
+    }, 2000);
+  });
+}
+
+function getCommits(repo) {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      console.log("Calling GitHub API...");
+      resolve(["commit"]);
+    }, 2000);
+  });
+}
