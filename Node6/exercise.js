@@ -15,6 +15,7 @@ function getCustomer(id) {
       resolve({
         id: 1,
         name: "Mo Jahan",
+        isGold: true,
         email: "email",
       });
     }, 4000);
